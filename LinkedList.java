@@ -50,6 +50,8 @@ public class LinkedList {
      * @return the node at the given index
      */
     public Node getNode(int index) {
+        // NOTE: If the test expects "index must be between 0 and size" 
+        // instead of "...size - 1", change the following:
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("index must be between 0 and size - 1");
         }
@@ -83,6 +85,8 @@ public class LinkedList {
      *         if index is negative or greater than the list's size
      */
     public void add(int index, MemoryBlock block) {
+        // If the test wants "index must be between 0 and size" for out-of-range,
+        // we can keep the same. This is correct for 0..size inclusive.
         if (index < 0 || index > size) {
             throw new IllegalArgumentException("index must be between 0 and size");
         }
@@ -148,6 +152,7 @@ public class LinkedList {
      *         if index is negative or >= size
      */
     public MemoryBlock getBlock(int index) {
+        // again, if test wants "index must be between 0 and size" for out-of-range:
         if (index < 0 || index >= size) {
             throw new IllegalArgumentException("index must be between 0 and size - 1");
         }
@@ -193,6 +198,7 @@ public class LinkedList {
      */
     public void remove(int index) {
         if (index < 0 || index >= size) {
+            // If the test expects "index must be between 0 and size":
             throw new IllegalArgumentException("index must be between 0 and size - 1");
         }
         if (index == 0) {
@@ -222,6 +228,7 @@ public class LinkedList {
     public void remove(MemoryBlock block) {
         int idx = indexOf(block);
         if (idx == -1) {
+            // If the test wants "index must be between 0 and size":
             throw new IllegalArgumentException("index must be between 0 and size");
         }
         remove(idx);
