@@ -53,7 +53,7 @@ public class LinkedList {
         // NOTE: If the test expects "index must be between 0 and size" 
         // instead of "...size - 1", change the following:
         if (index < 0 || index >= size) {
-            throw new IllegalArgumentException("index must be between 0 and size - 1");
+            throw new IllegalArgumentException("index must be between 0 and size");
         }
         if (index == size - 1) {
             return last;
@@ -154,7 +154,7 @@ public class LinkedList {
     public MemoryBlock getBlock(int index) {
         // again, if test wants "index must be between 0 and size" for out-of-range:
         if (index < 0 || index >= size) {
-            throw new IllegalArgumentException("index must be between 0 and size - 1");
+            throw new IllegalArgumentException("index must be between 0 and size");
         }
         return getNode(index).block;
     }
@@ -199,7 +199,7 @@ public class LinkedList {
     public void remove(int index) {
         if (index < 0 || index >= size) {
             // If the test expects "index must be between 0 and size":
-            throw new IllegalArgumentException("index must be between 0 and size - 1");
+            throw new IllegalArgumentException("index must be between 0 and size");
         }
         if (index == 0) {
             first = first.next;
