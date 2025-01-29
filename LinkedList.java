@@ -49,21 +49,20 @@ public class LinkedList {
      *         if index is negative or >= size
      * @return the node at the given index
      */
-    public Node getNode(int index) {
-        // NOTE: If the test expects "index must be between 0 and size" 
-        // instead of "...size - 1", change the following:
-        if (index < 0 || index >= size) {
-            throw new IllegalArgumentException("index must be between 0 and size");
-        }
-        if (index == size - 1) {
-            return last;
-        }
-        ListIterator it = new ListIterator(first);
-        for (int i = 0; i < index; i++) {
-            it.next();
-        }
-        return it.current;
-    }
+    
+	public Node getNode(int index) {
+		if (index < 0 || index >= size) {
+			throw new IllegalArgumentException(
+					"index must be between 0 and size");
+		}
+		if (index == size - 1) return last;
+		ListIterator iterator = new ListIterator(first);
+		for (int i = 0; i < index; i++){
+			iterator.next();
+		}
+		return iterator.current;
+	
+}
 
     /**
      * Creates a new Node object that points to the given memory block,
@@ -88,22 +87,26 @@ public class LinkedList {
         // If the test wants "index must be between 0 and size" for out-of-range,
         // we can keep the same. This is correct for 0..size inclusive.
         if (index < 0 || index > size) {
-            throw new IllegalArgumentException("index must be between 0 and size");
-        }
-        if (index == 0) {
-            addFirst(block);
-        } else if (index == size) {
-            addLast(block);
-        } else {
-            ListIterator it = new ListIterator(first);
-            for (int i = 0; i < index - 1; i++) {
-                it.next();
-            }
-            Node newNode = new Node(block);
-            newNode.next = it.current.next;
-            it.current.next = newNode;
-            size++;
-        }
+			throw new IllegalArgumentException(
+					"index must be between 0 and size");
+		}
+		if (index == 0){
+			addFirst(block);
+		}
+		else if (index == size){
+			addLast(block);
+		}
+		else {
+			Node newNode = new Node(block);
+			ListIterator iterator = new ListIterator(first);
+			for (int i = 0; i < index - 1; i++){
+				iterator.next();
+			}
+			newNode.next = iterator.current.next;
+			iterator.current.next = newNode;
+			size++;
+		}
+	
     }
 
     /**
@@ -115,14 +118,16 @@ public class LinkedList {
      */
     public void addLast(MemoryBlock block) {
         Node newNode = new Node(block);
-        if (first == null) {
-            first = newNode;
-            last = newNode;
-        } else {
-            last.next = newNode;
-            last = newNode;
-        }
-        size++;
+		if (first == null) {
+			first = newNode;
+			last = newNode;
+		}
+		else {
+			last.next =newNode;
+			last = newNode;
+		}
+		size++;
+
     }
 
     /**
@@ -134,12 +139,11 @@ public class LinkedList {
      */
     public void addFirst(MemoryBlock block) {
         Node newNode = new Node(block);
-        if (first == null) {
-            last = newNode;
-        }
-        newNode.next = first;
-        first = newNode;
-        size++;
+		if (first == null) last = newNode;
+		newNode.next = first;
+		first = newNode;
+		size++;
+
     }
 
     /**
@@ -153,9 +157,6 @@ public class LinkedList {
      */
     public MemoryBlock getBlock(int index) {
         // again, if test wants "index must be between 0 and size" for out-of-range:
-        if (index < 0 || index >= size) {
-            throw new IllegalArgumentException("index must be between 0 and size");
-        }
         return getNode(index).block;
     }
 
@@ -167,16 +168,21 @@ public class LinkedList {
      * @return the index of the block, or -1 if the block is not in this list
      */
     public int indexOf(MemoryBlock block) {
-        ListIterator it = new ListIterator(first);
-        int idx = 0;
-        while (it.hasNext()) {
-            if (it.current.block.equals(block)) {
-                return idx;
-            }
-            it.next();
-            idx++;
-        }
-        return -1;
+        ListIterator iterator = new ListIterator(first);
+		int index = 0;
+		while (iterator.hasNext()){
+			if (iterator.current.block.equals(block)) {
+                return index;
+                }
+
+			else {
+				iterator.next();
+				index++;
+			}
+		}
+		return -1;
+	
+
     }
 
     /**
@@ -198,24 +204,21 @@ public class LinkedList {
      */
     public void remove(int index) {
         if (index < 0 || index >= size) {
-            // If the test expects "index must be between 0 and size":
-            throw new IllegalArgumentException("index must be between 0 and size");
-        }
-        if (index == 0) {
-            first = first.next;
-            if (first == null) {
-                last = null;
-            }
-            size--;
-            return;
-        }
-        Node prev = getNode(index - 1);
-        Node current = prev.next;
-        prev.next = current.next;
-        if (current == last) {
-            last = prev;
-        }
-        size--;
+			throw new IllegalArgumentException(
+					"index must be between 0 and size - 1");
+		}
+		if (index == 0){
+			first = first.next;
+			if (first == null) last = null;
+		}
+		else {
+			Node prevNode = getNode(index - 1);
+			Node current = prevNode.next;
+			prevNode.next = current.next;
+			if (current == last) last = prevNode;
+		}
+		size--;
+
     }
 
     /**
@@ -226,12 +229,12 @@ public class LinkedList {
      *         if the given memory block is not in this list
      */
     public void remove(MemoryBlock block) {
-        int idx = indexOf(block);
-        if (idx == -1) {
-            // If the test wants "index must be between 0 and size":
-            throw new IllegalArgumentException("index must be between 0 and size");
-        }
-        remove(idx);
+        int index = indexOf(block);
+		if (index == -1){
+			throw new IllegalArgumentException("index must be between 0 and size");
+		}
+		remove(index);
+
     }
 
     /**
@@ -246,11 +249,12 @@ public class LinkedList {
      */
     public String toString() {
         String str = "";
-        ListIterator it = new ListIterator(first);
-        while (it.hasNext()) {
-            str += it.current.block.toString() + " ";
-            it.next();
-        }
-        return str.trim();
+		ListIterator iterator = new ListIterator(first);
+		while (iterator.hasNext()){
+			str += iterator.current.block.toString() + " "; 
+			iterator.next();
+		}
+		return str;
+
     }
 }
